@@ -6,6 +6,173 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+// 고객정보
+model User{
+  id                        Int            @id @default(autoincrement())
+  name                      String
+  email                     String         @unique
+  password                  String?
+  kakao_id                  Int?
+  created_at                DateTime       @default(now())
+  updated_at                DateTime?
+  
+  carinformation            CarInformation[]
+  @@map("users")
+}
+// 고객알람
+model UserNotification {
+  id                        Int            @id @default(autoincrement())
+  sales_process_id          Int            @unique
+  content                   String
+  read                      Boolean        @default(false)
+  created_at                DateTime       @default(now())
+  
+  sales_processes           SalesProcess   @relation(fields: [sales_process_id], references: [id])
+  @@map("user_notifications")
+}
+// 차량정보
+model CarInformation {
+  id                        Int            @id @default(autoincrement())
+  user_id                   Int            @unique
+  owner                     String?
+  car_name                  String?
+  trim                      String?
+  number                    String?
+  body_shape                String?
+  color                     String?
+  model_year                String?
+  first_registration_year   String?
+  engine                    String?
+  transmission              String?
+  manufacturer              String?
+  factory_price             Int?
+  created_at                DateTime       @default(now())
+  
+  users                     User           @relation(fields: [user_id], references: [id])
+  
+  insurance_histories       InsuranceHistory[]
+  transaction_histories     TransactionHistory[]
+  estimates                 Estimate[]
+  @@map("car_information")
+}
+// 거래이력
+model InsuranceHistory {
+  id                        Int            @id @default(autoincrement())
+  car_information_id        Int            @unique
+  history                   String         @db.LongText
+  
+  car_information           CarInformation @relation(fields: [car_information_id], references: [id])
+  @@map("insurance_histories")
+}
+// 보험이력
+model TransactionHistory {
+  id                        Int            @id @default(autoincrement())
+  car_information_id        Int            @unique
+  history                   String         @db.LongText
+  
+  car_information           CarInformation @relation(fields: [car_information_id], references: [id])
+  @@map("transaction_histories")
+}
+// 견적서 
+model Estimate {
+  id                        Int            @id @default(autoincrement())
+  car_information_id        Int            @unique
+  mileage                   String
+  address                   String
+  phone_number              String
+// 차량옵션
+  sunroof                   Boolean        @default(false)
+  navigation                Boolean        @default(false)
+  ventilation_seat          Boolean        @default(false)
+  heated_seat               Boolean        @default(false)
+  electric_seat             Boolean        @default(false)
+  smart_key                 Boolean        @default(false)
+  leather_seat              Boolean        @default(false)
+  electric_folding_mirrort  Boolean        @default(false)
+// 추가정보입력
+  accident_state            String?        @db.LongText
+  spare_key                 Int?
+  wheel_scratch             Int?
+  outer_plate_scratch       Int?
+  other_maintenence_repair  String?        @db.LongText
+  other_special             String?        @db.LongText
+  created_at                DateTime       @default(now())
+  updated_at                DateTime?
+
+  car_information           CarInformation @relation(fields: [car_information_id], references: [id])
+  sales_processes           SalesProcess[]
+  estimate_car_images       EstimateCarImage[]
+  @@map("estimates")
+}
+// 견적서 차량사진
+model EstimateCarImage {
+  id                        Int            @id @default(autoincrement())
+  estimate_id               Int            @unique
+  image_info                String
+  image                     String         @db.LongText
+  
+  estimates                 Estimate       @relation(fields: [estimate_id], references: [id])
+  @@map("estimate_car_images")
+}
+// 판매프로세스
+model SalesProcess {
+  id                        Int            @id @default(autoincrement())
+  estimate_id               Int            @unique
+  sales_processes_id        Int            @unique
+  quote_requested           DateTime       @default(now())
+  dealer_assigned           DateTime?
+  dealer_consulting         DateTime?
+  selling_requested         DateTime?
+  selling_completed         DateTime?
+  termination               DateTime?
+
+  estimates                 Estimate       @relation(fields: [estimate_id], references: [id])
+
+  user_notifications        UserNotification[]
+  quote_notifications       QuoteNotification[]
+  @@map("sales_processes")
+}
+// 딜러정보
+model Dealer {
+  id                        Int            @id @default(autoincrement())
+  branch_id                 Int            @unique
+  level                     String
+  personal_id               String
+  password                  String         @db.LongText
+  name                      String
+  created_at                DateTime       @default(now())
+  updated_at                DateTime?
+  
+  branches                  Branch         @relation(fields: [branch_id], references: [id])
+  @@map("dealers")
+}
+// 지점정보
+model Branch {
+  id                        Int            @id @default(autoincrement())
+  name                      String
+  address                   String
+  latitude                  Float?         @db.Float
+  longitude                 Float?         @db.Float
+  created_at                DateTime       @default(now())
+  updated_at                DateTime?
+  
+  dealers                   Dealer[]
+  quote_notifications       QuoteNotification[]
+  @@map("branches")
+}
+// 지점알람
+model QuoteNotification {
+  id                        Int            @id @default(autoincrement())
+  branch_id                 Int            @unique
+  sales_process_id          Int            @unique
+  dealer_assigned           Boolean
+  created_at                DateTime       @default(now())
+  
+  sales_processes           SalesProcess   @relation(fields: [sales_process_id], references: [id])
+  branches                  Branch         @relation(fields: [branch_id], references: [id])
+  @@map("quote_notifications")
 }
