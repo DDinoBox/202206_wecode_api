@@ -2,6 +2,7 @@ const http = require("http");
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const routes = require("./routes");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
@@ -13,6 +14,7 @@ const server = http.createServer(app);
 
 app.use(express.json());
 app.use(cors());
+app.use(routes);
 
 // Server start
 const start = async () => {
