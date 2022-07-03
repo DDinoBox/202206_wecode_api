@@ -20,7 +20,6 @@ CREATE TABLE `user_notifications` (
     `read` BOOLEAN NOT NULL DEFAULT false,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `user_notifications_sales_process_id_key`(`sales_process_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -42,7 +41,6 @@ CREATE TABLE `car_information` (
     `factory_price` INTEGER NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `car_information_user_id_key`(`user_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -52,7 +50,6 @@ CREATE TABLE `insurance_histories` (
     `car_information_id` INTEGER NOT NULL,
     `history` LONGTEXT NOT NULL,
 
-    UNIQUE INDEX `insurance_histories_car_information_id_key`(`car_information_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -62,7 +59,6 @@ CREATE TABLE `transaction_histories` (
     `car_information_id` INTEGER NOT NULL,
     `history` LONGTEXT NOT NULL,
 
-    UNIQUE INDEX `transaction_histories_car_information_id_key`(`car_information_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -90,7 +86,6 @@ CREATE TABLE `estimates` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `estimates_car_information_id_key`(`car_information_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -101,7 +96,6 @@ CREATE TABLE `estimate_car_images` (
     `image_info` VARCHAR(191) NOT NULL,
     `image` LONGTEXT NOT NULL,
 
-    UNIQUE INDEX `estimate_car_images_estimate_id_key`(`estimate_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -117,8 +111,6 @@ CREATE TABLE `sales_processes` (
     `selling_completed` DATETIME(3) NULL,
     `termination` DATETIME(3) NULL,
 
-    UNIQUE INDEX `sales_processes_estimate_id_key`(`estimate_id`),
-    UNIQUE INDEX `sales_processes_sales_processes_id_key`(`sales_processes_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -133,7 +125,6 @@ CREATE TABLE `dealers` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `dealers_branch_id_key`(`branch_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -158,8 +149,6 @@ CREATE TABLE `quote_notifications` (
     `dealer_assigned` BOOLEAN NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `quote_notifications_branch_id_key`(`branch_id`),
-    UNIQUE INDEX `quote_notifications_sales_process_id_key`(`sales_process_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

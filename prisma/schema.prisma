@@ -26,7 +26,7 @@ model User{
 // 고객알람
 model UserNotification {
   id                        Int            @id @default(autoincrement())
-  sales_process_id          Int            @unique
+  sales_process_id          Int
   content                   String
   read                      Boolean        @default(false)
   created_at                DateTime       @default(now())
@@ -37,7 +37,7 @@ model UserNotification {
 // 차량정보
 model CarInformation {
   id                        Int            @id @default(autoincrement())
-  user_id                   Int            @unique
+  user_id                   Int
   owner                     String?
   car_name                  String?
   trim                      String?
@@ -62,7 +62,7 @@ model CarInformation {
 // 거래이력
 model InsuranceHistory {
   id                        Int            @id @default(autoincrement())
-  car_information_id        Int            @unique
+  car_information_id        Int
   history                   String         @db.LongText
   
   car_information           CarInformation @relation(fields: [car_information_id], references: [id])
@@ -71,7 +71,7 @@ model InsuranceHistory {
 // 보험이력
 model TransactionHistory {
   id                        Int            @id @default(autoincrement())
-  car_information_id        Int            @unique
+  car_information_id        Int
   history                   String         @db.LongText
   
   car_information           CarInformation @relation(fields: [car_information_id], references: [id])
@@ -80,7 +80,7 @@ model TransactionHistory {
 // 견적서 
 model Estimate {
   id                        Int            @id @default(autoincrement())
-  car_information_id        Int            @unique
+  car_information_id        Int
   mileage                   String
   address                   String
   phone_number              String
@@ -111,7 +111,7 @@ model Estimate {
 // 견적서 차량사진
 model EstimateCarImage {
   id                        Int            @id @default(autoincrement())
-  estimate_id               Int            @unique
+  estimate_id               Int
   image_info                String
   image                     String         @db.LongText
   
@@ -121,8 +121,8 @@ model EstimateCarImage {
 // 판매프로세스
 model SalesProcess {
   id                        Int            @id @default(autoincrement())
-  estimate_id               Int            @unique
-  sales_processes_id        Int            @unique
+  estimate_id               Int
+  sales_processes_id        Int
   quote_requested           DateTime       @default(now())
   dealer_assigned           DateTime?
   dealer_consulting         DateTime?
@@ -139,7 +139,7 @@ model SalesProcess {
 // 딜러정보
 model Dealer {
   id                        Int            @id @default(autoincrement())
-  branch_id                 Int            @unique
+  branch_id                 Int
   level                     String
   personal_id               String
   password                  String         @db.LongText
@@ -167,8 +167,8 @@ model Branch {
 // 지점알람
 model QuoteNotification {
   id                        Int            @id @default(autoincrement())
-  branch_id                 Int            @unique
-  sales_process_id          Int            @unique
+  branch_id                 Int
+  sales_process_id          Int
   dealer_assigned           Boolean
   created_at                DateTime       @default(now())
   
