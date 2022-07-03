@@ -1,0 +1,33 @@
+{
+  "name": "mycar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sever.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+		"migrate": "npx prisma migrate dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DDinoBox/-202206_wecode_api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DDinoBox/-202206_wecode_api/issues"
+  },
+  "homepage": "https://github.com/DDinoBox/-202206_wecode_api#readme",
+  "devDependencies": {
+    "eslint": "^8.19.0",
+    "nodemon": "^2.0.18",
+    "prisma": "^4.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "http": "^0.0.1-security"
+  }
+}
